@@ -1,9 +1,9 @@
-variable "cidr_block" {
-    default = "10.51.0.0/16"
-}
-
-variable "public_subnets" {
-    default = [
+module "eks_cluster" {
+    source = "git@github.com:antonioazambuja/terraform-aws-eks.git"
+    eks_version = "1.27"
+    cluster_name = "eks-multi-az"
+    key_pair_name = "sre-laboratory"
+    public_subnets = [
         {
             availability_zone = "us-east-1a"
             newbits = 8
@@ -17,10 +17,7 @@ variable "public_subnets" {
             newbits = 8
         }
     ]
-}
-
-variable "private_subnets" {
-    default = [
+    private_subnets = [
         {
             availability_zone = "us-east-1a"
             newbits = 5
@@ -34,70 +31,7 @@ variable "private_subnets" {
             newbits = 5
         }
     ]
-}
-
-variable "vpc_tags" {
-    default = {
-        Name = "MainVPC"
-    }
-}
-
-variable "public_subnet_tags" {
-    default = {
-        AccessMode = "PUBLIC"
-    }
-}
-
-variable "igw_tags" {
-    default = {
-        Name = "MainIGW"
-    }
-}
-
-variable "rt_igw_tags" {
-    default = {
-        Name = "MainIGW"
-    }
-}
-
-variable "private_subnet_tags" {
-    default = {
-        AccessMode = "PRIVATE"
-    }
-}
-
-variable "eip_nat_tags" {
-    default = {
-        Name = "EIPVpc"
-    }
-}
-
-variable "nat_gateway_tags" {
-    default = {
-        Name = "MainNATGateway"
-    }
-}
-
-variable "rt_nat_tags" {
-    default = {
-        Name = "MainNATGateway"
-    }
-}
-
-variable "cluster_name" {
-    default = "eks-multi-az"
-}
-
-variable "region" {
-    default = "us-east-1"
-}
-
-variable "kubernetes_version" {
-    default = "1.27"
-}
-
-variable "eks_node_groups" {
-    default = [
+    eks_node_groups = [
         {
             desired_size = 1
             max_size     = 3
@@ -120,16 +54,7 @@ variable "eks_node_groups" {
             instance_types = ["m5.xlarge"]
         }
     ]
-}
-
-variable "desired_size" {
-    default = 3
-}
-
-variable "max_size" {
-    default = 10
-}
-
-variable "min_size" {
-    default = 3
+    eks_tags = {
+        Name = "eks-multi-az"
+    }
 }
